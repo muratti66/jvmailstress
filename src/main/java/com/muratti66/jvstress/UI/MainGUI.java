@@ -508,11 +508,6 @@ public class MainGUI extends javax.swing.JFrame {
             mailSendConfig.put("process", ProcessField.getText());
             mailSendConfig.put("timeout", TimeoutField.getText());
             MailOps.start();
-            int totalMail = Integer.parseInt(ThreadField.getText()) * 
-                    Integer.parseInt(ProcessField.getText());
-            writeLogger("Sending process started, " + totalMail 
-                    + " emails sent to host " 
-                    + FieldHost.getText() + ".", false);
         } else {
             writeLogger("Please fill the "
                     + "\"Attach, Content and ServerName\" fileds.... ", true);

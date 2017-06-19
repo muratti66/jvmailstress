@@ -36,11 +36,12 @@ import com.muratti66.jvstress.UI.MainGUI;
 import static com.muratti66.jvstress.SystemOps.writeLogger;
 import static com.muratti66.jvstress.SystemOps.writeSMTPLogger;
 import static com.muratti66.jvstress.SystemOps.runGC;
+import java.util.NoSuchElementException;
 /**
  * This class does mail operations
  */
 public class MailOps {
-    private static Boolean opsStatus = true;
+    private static Boolean opsStatus;
     private final static long MAX_FILE_SIZE = 20480000;
     private final static String thisClass  = String.class.getName();
     private static HashMap<String, Object> mailSendLocalConfig;
@@ -48,6 +49,7 @@ public class MailOps {
      * Start Mail Sender Operation
      */
     public static void start() {
+        opsStatus = true;
         initVars();
         int thread = Integer.valueOf(mailSendLocalConfig.
                 get("thread").toString());
@@ -101,6 +103,10 @@ public class MailOps {
                 }
                 envSendr.add(envSendrNI[i].trim().replaceAll("\\s+",""));
             }
+            if (envSendr.size() == 0) {
+                opsStatus = false;
+                writeLogger("Envelope sender should not be empty", true);
+            }
             mailSendLocalConfig.put("envSendrList", envSendr);
             mailSendLocalConfig.put("envSendrLength", envSendr.size());
             String[] envRecpNI = mailSendLocalConfig.get("envRecp").toString().
@@ -112,7 +118,10 @@ public class MailOps {
                 }
                 envRecp.add(envRecpNI[j].trim().replaceAll("\\s+",""));
             }
-            String addingFile;
+            if (envRecp.size() == 0) {
+                opsStatus = false;
+                writeLogger("Envelope recipient should not be empty", true);
+            }
             mailSendLocalConfig.put("envRecpList", envRecp);
             mailSendLocalConfig.put("envRecpLength", envRecp.size());
             String[] subjectNI = mailSendLocalConfig.get("subject").toString().
@@ -124,8 +133,13 @@ public class MailOps {
                 }
                 subjects.add(subjectNI[k].trim());
             }
+            if (subjects.size() == 0) {
+                opsStatus = false;
+                writeLogger("Subject should not be empty", true);
+            }
             mailSendLocalConfig.put("subjectList", subjects);
             mailSendLocalConfig.put("subjectLength", subjects.size());
+            String addingFile;
             attach = new ArrayList();
             File attachFolder = new File(attachPath);
             File[] listOfAttach = attachFolder.listFiles();
@@ -150,13 +164,26 @@ public class MailOps {
                     content.add(addingFile);
                 }
             }
+            if (content.size() == 0) {
+                opsStatus = false;
+                writeLogger("Content folder not be empty", true);
+            }
             mailSendLocalConfig.put("contentList", content);
             mailSendLocalConfig.put("contentLength", content.size());
-            opsStatus = true;
         } catch (Exception e) {
             opsStatus = false;
             writeLogger(e.toString(), true);
             e.printStackTrace();
+        }
+        if(opsStatus.equals(true)) {
+            int thread = Integer.valueOf(mailSendLocalConfig.
+                get("thread").toString());
+            int process = Integer.valueOf(mailSendLocalConfig.
+                get("process").toString());
+            int totalMail = thread * process;
+            writeLogger("Sending process started, " + totalMail 
+                    + " emails sent to host " 
+                    + host + ".", false);
         }
     }
     /**
@@ -208,6 +235,8 @@ public class MailOps {
                         get("props");
                 Session mailSession = Session.getInstance(props);
                 MimeMessage message = new MimeMessage(mailSession);
+                String samplebodyContent = "Content files not found " 
+                                + "\n This is Sample Content";
                 try {
                     message.setFrom(
                             new InternetAddress(selectedEnvSendr, false));
@@ -220,21 +249,31 @@ public class MailOps {
                             Scanner scanner = new Scanner(
                                     new File(selectedContent))
                                     .useDelimiter("\\Z");
-                            bodyContent = scanner.next();
+                            try {
+                                bodyContent = scanner.next();
+                            } catch (NoSuchElementException y) {
+                                writeLogger("Content file has a problem, "
+                                + "using example content : " + selectedContent
+                                + " " + y.toString(), false);
+                                bodyContent = samplebodyContent;
+                            }
                         } catch (IOException e) {
-                            writeLogger(selectedContent + " file" + 
-                                    e.toString(), true);
+                            writeLogger("Content file has a I/O problem : " 
+                                    + selectedContent + " " 
+                                    + e.toString(), true);
                             continue;
                         }
                     } else {
-                        bodyContent = "Content files not found " 
-                                + "\n This is Sample Content";
+                        bodyContent = samplebodyContent;
+                        writeLogger("Content file not found, "
+                                + "using example content : " 
+                                + selectedContent, false);
                     }
                     BodyPart messageBodyPart = new MimeBodyPart();
                     if (sys.isHTML(bodyContent)) {
                         messageBodyPart.setContent(bodyContent,
                                 "text/html; charset=utf-8");
-                    } else { 
+                    } else {
                         messageBodyPart.setText(bodyContent);
                     }
                     Multipart multipart = new MimeMultipart();
@@ -251,8 +290,9 @@ public class MailOps {
                             messageBodyPart.setFileName(fileName);
                             multipart.addBodyPart(messageBodyPart);
                         } catch (Exception f) {
-                            writeLogger(selectedAttach + " file" + 
-                                    f.toString(), true);
+                            writeLogger("Attachment file access problem :" 
+                                    + selectedAttach + " " 
+                                    + f.toString(), true);
                         }
                     }
                     message.setContent(multipart);
@@ -281,6 +321,7 @@ public class MailOps {
                 } catch (Exception j) {
                     writeLogger("Thread "  + thisThreadNum + ", Process " 
                             + nowParalel + " : " + j.toString(), true);
+                    j.printStackTrace();
                 }
             }
         }

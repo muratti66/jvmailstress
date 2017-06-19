@@ -39,6 +39,9 @@ public class SystemOps {
         if (maxValue == 1) {
             return 1;
         }
+        if (maxValue == 0) {
+            return 0;
+        }
         Random rn = new Random();
         int range = maxValue - 1 + 1;
         int randomNum =  rn.nextInt(range) + 1;
