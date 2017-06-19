@@ -4,7 +4,8 @@ JVMailStress is a smtp stress tool with UI supported, designed to test your emai
 This tool send e-mail by randomly selecting sender, recipient, subject, attachment, and content.<br>
 
 
-# Features :
+Features
+--------
   - GUI using (Windows native supported)
   - Works in Background
   - Uses as many workers
@@ -22,7 +23,8 @@ Supported OS
   - Mac OS X
 
 
-# Preperation (Step by step) :
+Preperation (Step by step)
+--------------------------
  - Download and install netbeans from https://netbeans.org
  - Import project and run menu / "clean and build project"
  - Go to folder [Project Folder]/target
@@ -31,7 +33,8 @@ Supported OS
  - Double click or "java -jar JVMailStress-1.0-SNAPSHOT.jar" 
 
 
-# Usage (Step by step) :
+Usage (Step by step)
+--------------------
 
 ![ScreenShot](/screenshot.png)
 
