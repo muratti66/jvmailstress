@@ -10,16 +10,17 @@
 package com.muratti66.jvstress.UI;
 
 import static com.muratti66.jvstress.SystemOps.whatOS;
+import java.io.File;
 import javax.swing.UIManager;
 /**
- * This class is filechooser ui
+ * This class is file chooser ui
  */
-public class FileChooser extends javax.swing.JFrame {
-    public static String selectedContent = "Please Select";
+public class FileChooserAttach extends javax.swing.JFrame {
+    public static String selectedAttach = "Please Select";
     /**
      * Creates new form FileChoser
      */
-    public FileChooser() {
+    public FileChooserAttach() {
         initComponents();
     }
 
@@ -36,9 +37,9 @@ public class FileChooser extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("E-Posta Body Klasörü Seçimi");
-        setBounds(new java.awt.Rectangle(300, 200, 0, 0));
+        setBounds(new java.awt.Rectangle(350, 250, 0, 0));
 
-        jFolderChooser.setCurrentDirectory(new java.io.File("/"));
+        jFolderChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         jFolderChooser.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
         jFolderChooser.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         jFolderChooser.setFocusCycleRoot(true);
@@ -50,7 +51,7 @@ public class FileChooser extends javax.swing.JFrame {
         });
         jFolderChooser.addVetoableChangeListener(new java.beans.VetoableChangeListener() {
             public void vetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {
-                FileChooser.this.vetoableChange(evt);
+                FileChooserAttach.this.vetoableChange(evt);
             }
         });
 
@@ -75,7 +76,7 @@ public class FileChooser extends javax.swing.JFrame {
         
             if (evt.getActionCommand().equals(
                     javax.swing.JFileChooser.APPROVE_SELECTION)) {
-                selectedContent = jFolderChooser
+                selectedAttach = jFolderChooser
                         .getSelectedFile().getAbsolutePath();
                 dispose();
             } else if (evt.getActionCommand().equals(
@@ -108,25 +109,31 @@ public class FileChooser extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FileChooser.class.getName())
+            java.util.logging.Logger.getLogger(FileChooserAttach.class.getName())
                     .log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FileChooser.class.getName())
+            java.util.logging.Logger.getLogger(FileChooserAttach.class.getName())
                     .log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FileChooser.class.getName())
+            java.util.logging.Logger.getLogger(FileChooserAttach.class.getName())
                     .log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FileChooser.class.getName())
+            java.util.logging.Logger.getLogger(FileChooserAttach.class.getName())
                     .log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FileChooser().setVisible(true);
+                new FileChooserAttach().setVisible(true);
             }
         });
     }

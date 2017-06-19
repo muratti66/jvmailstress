@@ -160,7 +160,7 @@ public class MainGUI extends javax.swing.JFrame {
 
         ContentField.setEditable(false);
         ContentField.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
-        ContentField.setText(FileChooser.selectedContent);
+        ContentField.setText(FileChooserContent.selectedContent);
         ContentField.setToolTipText(bundle1.getString("MainGUI.ContentField.toolTipText")); // NOI18N
         ContentField.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         ContentField.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -174,7 +174,7 @@ public class MainGUI extends javax.swing.JFrame {
 
         AttachField.setEditable(false);
         AttachField.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
-        AttachField.setText(FileChooserTwo.selectedAttach);
+        AttachField.setText(FileChooserAttach.selectedAttach);
         AttachField.setToolTipText(bundle1.getString("MainGUI.AttachField.toolTipText")); // NOI18N
         AttachField.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         AttachField.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -470,22 +470,22 @@ public class MainGUI extends javax.swing.JFrame {
      * @param   evt 
      */
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        ContentField.setText(FileChooser.selectedContent);
-        AttachField.setText(FileChooserTwo.selectedAttach);
+        ContentField.setText(FileChooserContent.selectedContent);
+        AttachField.setText(FileChooserAttach.selectedAttach);
     }//GEN-LAST:event_formWindowActivated
     /**
      * Start the content filechooser
      * @param   evt 
      */
     private void ContentFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ContentFieldMouseClicked
-        FileChooser.start();
+        FileChooserContent.start();
     }//GEN-LAST:event_ContentFieldMouseClicked
     /**
      * Start the attach filechooser
      * @param   evt 
      */
     private void AttachFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AttachFieldMouseClicked
-        FileChooserTwo.start();
+        FileChooserAttach.start();
     }//GEN-LAST:event_AttachFieldMouseClicked
     /**
      * mailSendConfig general configuration is setting 
