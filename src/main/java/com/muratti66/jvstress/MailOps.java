@@ -200,9 +200,12 @@ public class MailOps {
                         get("attachList");
                 int attachLength = Integer.valueOf(mailSendLocalConfig.
                         get("attachLength").toString());
-                String selectedAttach = 
-                        attachList.get(sys.genRandom(attachLength) - 1)
-                        .toString();
+                String selectedAttach = "";
+                if (attachLength > 0) {
+                    selectedAttach = 
+                            attachList.get(sys.genRandom(attachLength) - 1)
+                            .toString();
+                }
                 ArrayList contentList = (ArrayList) mailSendLocalConfig.
                         get("contentList");
                 int contentLength = Integer.valueOf(mailSendLocalConfig.
